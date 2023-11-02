@@ -43,7 +43,7 @@ export async function POST(req: Request) {
       "This is my data within the system,this data is about the products." +
       relevantProducts.map(
         (product) =>
-          `Title: ${product.title}\nPrice: ${product.price}\n Category:${product.category} \nCreated Date: ${product.createdAt} \nUpdated Date: ${product.updatedAt}`
+          `Title: ${product.title}\nPrice: ${product.price}$\n Category:${product.category} \nCreated Date: ${product.createdAt} \nUpdated Date: ${product.updatedAt}`
       ),
   };
 
