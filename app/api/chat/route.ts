@@ -16,6 +16,7 @@ export async function POST(req: Request) {
   //   });
   // }
   const products = await prisma.product.findMany();
+  console.log(products.length);
   const messages: ChatCompletionMessage[] = body.messages;
   console.log(messages);
   // const userId = currentUser.id;
@@ -41,6 +42,9 @@ export async function POST(req: Request) {
     content:
       "You are an e-commerce website manager. You answer the user's question based on the existing data in the system. Remember only give them title, price, category, and only show data in the database, if there is no data like that, say no, do not bluff about it. " +
       "This is my data within the system,this data is about the products." +
+      "Remember there are " +
+      products.length +
+      "Products in the system" +
       relevantProducts.map(
         (product) =>
           `Title: ${product.title}\nPrice: ${product.price}$\n Category:${product.category} \nCreated Date: ${product.createdAt} \nUpdated Date: ${product.updatedAt}`
