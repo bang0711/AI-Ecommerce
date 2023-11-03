@@ -4,13 +4,20 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useModal } from "@/hooks/useModal";
 import { Message } from "ai";
 import { useChat } from "ai/react";
-import { Bot, Trash, XCircle } from "lucide-react";
+import { Bot, List, Trash, XCircle } from "lucide-react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 type Props = {};
 
 function ChatModal({}: Props) {
@@ -24,8 +31,14 @@ function ChatModal({}: Props) {
     setMessages,
     isLoading,
     error,
+    setInput,
   } = useChat();
   const lastMessageIsUser = messages[messages.length - 1]?.role === "user";
+  const questions = [
+    "Most Expensive Product",
+    "Cheapest Product",
+    "How Many Product in total?",
+  ];
   return (
     <AnimatePresence>
       {isModalOpen && (
@@ -62,7 +75,7 @@ function ChatModal({}: Props) {
               {!error && messages.length === 0 && (
                 <div className="flex h-full items-center justify-center gap-3">
                   <Bot />
-                  Ask the AI a question about your notes
+                  Ask the AI a questions about the website.
                 </div>
               )}
             </div>
@@ -73,9 +86,25 @@ function ChatModal({}: Props) {
                 size="icon"
                 className="shrink-0"
                 type="button"
-                onClick={() => setMessages([])}
               >
-                <Trash />
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <List />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuLabel>Common Question</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    {questions.map((question) => (
+                      <DropdownMenuItem
+                        onClick={() => setInput(question)}
+                        className="cursor-pointer"
+                        key={question}
+                      >
+                        {question}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </Button>
               <Input
                 value={input}

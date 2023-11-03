@@ -32,6 +32,12 @@ function AuthMenu({}: Props) {
         >
           Register
         </DropdownMenuItem>
+        <DropdownMenuItem
+          className="cursor-pointer"
+          onClick={() => onOpen("openChat")}
+        >
+          Chat
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

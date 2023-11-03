@@ -9,16 +9,16 @@ import { OpenAIStream, StreamingTextResponse } from "ai";
 export async function POST(req: Request) {
   const body = await req.json();
   const currentUser = await getCurrentUser();
-  if (!currentUser) {
-    return NextResponse.json({
-      messages: "You have to be logged in",
-      status: 400,
-    });
-  }
+  // if (!currentUser) {
+  //   return NextResponse.json({
+  //     messages: "You have to be logged in",
+  //     status: 400,
+  //   });
+  // }
   const products = await prisma.product.findMany();
   const messages: ChatCompletionMessage[] = body.messages;
   console.log(messages);
-  const userId = currentUser.id;
+  // const userId = currentUser.id;
   const messagesTruncated = messages.slice(-6);
   const embedding = await getEmbedding(
     messagesTruncated.map((message) => message.content).join("\n")
@@ -39,7 +39,7 @@ export async function POST(req: Request) {
   const systemMessage: ChatCompletionMessage = {
     role: "system",
     content:
-      "You are an e-commerce website manager. This You answer the user's question based on the existing data in the system. Remember only give them title, price, category, and only show data in the database, if there is no data like that, say no, do not bluff about it. " +
+      "You are an e-commerce website manager. You answer the user's question based on the existing data in the system. Remember only give them title, price, category, and only show data in the database, if there is no data like that, say no, do not bluff about it. " +
       "This is my data within the system,this data is about the products." +
       relevantProducts.map(
         (product) =>
